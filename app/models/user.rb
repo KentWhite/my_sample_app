@@ -13,6 +13,7 @@ require 'digest'
 
 class User < ActiveRecord::Base
   before_validation :strip_blanks
+  before_validation :email_to_lower_case
   
   attr_accessor :password
   attr_accessible :name, :email, :password, :password_confirmation
@@ -57,6 +58,9 @@ class User < ActiveRecord::Base
     self.name = self.name.strip
   end
 
+  def email_to_lower_case
+    self.email.downcase!
+  end
   private
 
     def encrypt_password
