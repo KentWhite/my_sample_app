@@ -1,12 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.8'
-gem 'sqlite3', '1.3.3'
+gem 'rails', '3.0.9'
 gem 'gravatar_image_tag', '1.0.0.pre2'
 gem 'will_paginate', '3.0.pre2'
-
-gem 'rake', '0.8.7'
-
+gem 'sqlite3', '1.3.3'
 
 group :development do
   gem 'rspec-rails', '2.6.1'
@@ -20,7 +17,6 @@ group :test do
   gem 'spork', '0.9.0.rc8'
   gem 'factory_girl_rails', '1.0'
 end
-
 # Use unicorn as the web server
 # gem 'unicorn'
 
@@ -34,7 +30,7 @@ end
 # Bundle the extra gems:
 # gem 'bj'
 # gem 'nokogiri'
-# gem 'sqlite3-ruby', :require => 'sqlite3'
+#gem 'sqlite3-ruby', :require => 'sqlite3'
 # gem 'aws-s3', :require => 'aws/s3'
 
 # Bundle gems for the local environment. Make sure to
