@@ -1,0 +1,6 @@
+bundle install
+ssh -T git@github.com
+git config --global github.token 154be61d285e7f715513fca5cd21e4ca
+git push heroku
+heroku keys:add ~/.ssh/id_rsa.pub
+git push heroku
