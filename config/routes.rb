@@ -1,27 +1,55 @@
 MySampleApp::Application.routes.draw do
   #get "sessions/new"
 
+#  resources :users do
+#    member do
+#      get :following, :followers
+#    end
+#    :collection => {:help => :get, :recover => :post}
+#  end
+
+#  resources :sessions, :only => [:new, :create, :destroy]
+#  resources :member, :only => {:recovery => :get}             
+#  resources :microposts, :only => [:create, :destroy]
+#  resources :relationships, :only => [:create, :destroy]
+
+#  match '/signup',  :to => 'users#new'
+#  match '/signin',  :to => 'sessions#new'
+#  match '/signout', :to => 'sessions#destroy'
+ # get "users/new"
+
+#  match '/contact', :to => 'pages#contact'
+#  match '/about',   :to => 'pages#about'
+#  match '/help',    :to => 'pages#help'
+  
+#  root :to => 'pages#home'
+  resources :password_reminders, :only => [:new, :create] do
+    get :reset, :on => :member
+  end
+
+  resources :direct_messages, :only => [] do
+    get :received, :on => :collection
+    get :sent, :on => :collection
+  end
+
   resources :users do
     member do
       get :following, :followers
     end
   end
-
-  resources :sessions, :only => [:new, :create, :destroy]
-  resources :microposts, :only => [:create, :destroy]
+  resources :sessions,      :only => [:new, :create, :destroy]
+  resources :microposts,    :only => [:create, :destroy]
   resources :relationships, :only => [:create, :destroy]
 
-  match '/signup',  :to => 'users#new'
-  match '/signin',  :to => 'sessions#new'
-  match '/signout', :to => 'sessions#destroy'
- # get "users/new"
+  match '/recover_password', :to => 'password_reminders#new'
+  match '/signup',           :to => 'users#new'
+  match '/signin',           :to => 'sessions#new'
+  match '/signout',          :to => 'sessions#destroy'
+  match '/contact',          :to => 'pages#contact'
+  match '/about',            :to => 'pages#about'
+  match '/help',             :to => 'pages#help'
 
-  match '/contact', :to => 'pages#contact'
-  match '/about',   :to => 'pages#about'
-  match '/help',    :to => 'pages#help'
-  
   root :to => 'pages#home'
-
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

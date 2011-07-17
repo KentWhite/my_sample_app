@@ -12,6 +12,17 @@
 
 ActiveRecord::Schema.define(:version => 20110708162352) do
 
+  create_table "direct_messages", :force => true do |t|
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.string   "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "direct_messages", ["recipient_id"], :name => "index_direct_messages_on_recipient_id"
+  add_index "direct_messages", ["sender_id"], :name => "index_direct_messages_on_sender_id"
+
   create_table "microposts", :force => true do |t|
     t.string   "content"
     t.integer  "user_id"
@@ -21,6 +32,13 @@ ActiveRecord::Schema.define(:version => 20110708162352) do
 
   add_index "microposts", ["created_at"], :name => "index_microposts_on_created_at"
   add_index "microposts", ["user_id"], :name => "index_microposts_on_user_id"
+
+  create_table "recipients", :force => true do |t|
+    t.integer  "micropost_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "relationships", :force => true do |t|
     t.integer  "follower_id"
@@ -40,9 +58,12 @@ ActiveRecord::Schema.define(:version => 20110708162352) do
     t.datetime "updated_at"
     t.string   "encrypted_password"
     t.string   "salt"
-    t.boolean  "admin",              :default => false
+    t.boolean  "admin",                  :default => false
+    t.string   "username"
+    t.boolean  "follower_notifications", :default => true
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 
 end

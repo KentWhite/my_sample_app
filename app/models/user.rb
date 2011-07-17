@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   before_validation :email_to_lower_case
   
   attr_accessor :password
-  attr_accessible :name, :email, :password, :password_confirmation
+  attr_accessible :name, :email, :password, :password_confirmation, :username
   
   has_many :microposts, :dependent => :destroy
   has_many :relationships, :foreign_key => "follower_id",
@@ -39,7 +39,9 @@ class User < ActiveRecord::Base
  # Automatically create the virtual attribute 'password_confirmation'.
   validates :password, :presence     => true,
                        :confirmation => true,
-                       :length       => { :within => 6..40 }
+                       :length       => { :within => 6..40 },
+                       :unless       => :password_is_not_being_updated?
+
                        
   before_save :encrypt_password
 
@@ -88,11 +90,18 @@ class User < ActiveRecord::Base
   end
   private
 
-    def encrypt_password
-      self.salt = make_salt if new_record?
-      self.encrypted_password = encrypt(password)
-    end
+#    def encrypt_password
+#      self.salt = make_salt if new_record?
+#      self.encrypted_password = encrypt(password)
+#    end
 
+    def encrypt_password
+      unless password_is_not_being_updated?
+        self.salt = make_salt
+        self.encrypted_password = encrypt(password)
+      end
+    end
+    
     def encrypt(string)
       secure_hash("#{salt}--#{string}")
     end
@@ -105,4 +114,8 @@ class User < ActiveRecord::Base
       Digest::SHA2.hexdigest(string)
     end                       
 
+    def password_is_not_being_updated?
+      self.id && self.password.blank?
+    end
+    
 end
