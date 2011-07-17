@@ -1,12 +1,17 @@
 require 'crypto'
 
+
 class PasswordRemindersController < ApplicationController
+
   def new
     @title = "Recover password"
   end
 
+
   def create
+
     user = User.find_by_username( params[:username] )
+
     if user
       token = Crypto.encrypt("#{ user.username }:#{ user.salt }")
       UserMailer.password_recovery(:token => token, :email => user.email,
@@ -26,9 +31,9 @@ class PasswordRemindersController < ApplicationController
       sign_in( user )
       flash.now[:notice] = "Please enter a new password."
       redirect_to edit_user_path( user )
-    rescue => err
-      flash[:error] = "The recovery link given is not valid."
-      redirect_to root_url
+    rescue => err      flash[:error] = "The recovery link given is not valid."
+           redirect_to root_url
     end
   end
+
 end
